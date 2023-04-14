@@ -450,6 +450,7 @@ def get_settings(options: dict, gha: Optional[GithubAction] = None) -> Settings:
     check_var_condition(is_float(seconds_between_github_reads), f'SECONDS_BETWEEN_GITHUB_READS must be a positive number: {seconds_between_github_reads}')
     check_var_condition(is_float(seconds_between_github_writes), f'SECONDS_BETWEEN_GITHUB_WRITES must be a positive number: {seconds_between_github_writes}')
 
+
     settings = Settings(
         token=get_var('GITHUB_TOKEN', options),
         api_url=api_url,
@@ -490,7 +491,8 @@ def get_settings(options: dict, gha: Optional[GithubAction] = None) -> Settings:
         check_run_annotation=annotations,
         seconds_between_github_reads=float(seconds_between_github_reads),
         seconds_between_github_writes=float(seconds_between_github_writes),
-        search_pull_requests=get_bool_var('SEARCH_PULL_REQUESTS', options, default=False)
+        search_pull_requests=get_bool_var('SEARCH_PULL_REQUESTS', options, default=False),
+        details_url = get_var('DETAILS_URL', options)
     )
 
     check_var(settings.token, 'GITHUB_TOKEN', 'GitHub token')

@@ -128,6 +128,11 @@ inputs:
     description: 'Prior to v2.6.0, the action used the "/search/issues" REST API to find pull requests related to a commit. If you need to restore that behaviour, set this to "true". Defaults to "false".'
     default: 'false'
     required: false
+  details_url:
+    description: 'details url for check, not passed if not provided to check'
+    default: 'false'
+    required: false
+
 outputs:
   json:
     description: "Test results as JSON"
@@ -242,6 +247,7 @@ runs:
         ROOT_LOG_LEVEL: ${{ inputs.root_log_level }}
         # not documented
         LOG_LEVEL: ${{ inputs.log_level }}
+        DETAILS_URL: ${{ inputs.detail_url }}
       shell: bash
 
     - name: Save PIP packages cache

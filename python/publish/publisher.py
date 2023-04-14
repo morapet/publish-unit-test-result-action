@@ -70,6 +70,7 @@ class Settings:
     seconds_between_github_reads: float
     seconds_between_github_writes: float
     search_pull_requests: bool
+    details_url: str
 
 
 @dataclasses.dataclass(frozen=True)
@@ -404,6 +405,7 @@ class Publisher:
                                                         head_sha=self._settings.commit,
                                                         status='completed',
                                                         conclusion=conclusion,
+                                                        details_url=self._settings.details_url,
                                                         output=output)
                 logger.info(f'Created check {check_run.html_url}')
             else:
