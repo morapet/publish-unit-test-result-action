@@ -450,6 +450,8 @@ def get_settings(options: dict, gha: Optional[GithubAction] = None) -> Settings:
     check_var_condition(is_float(seconds_between_github_reads), f'SECONDS_BETWEEN_GITHUB_READS must be a positive number: {seconds_between_github_reads}')
     check_var_condition(is_float(seconds_between_github_writes), f'SECONDS_BETWEEN_GITHUB_WRITES must be a positive number: {seconds_between_github_writes}')
 
+    details_url = get_var('DETAILS_URL', options)
+    logger.info(f'Read {details_url}')
 
     settings = Settings(
         token=get_var('GITHUB_TOKEN', options),
