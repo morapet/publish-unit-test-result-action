@@ -407,7 +407,7 @@ class Publisher:
                                                         conclusion=conclusion,
                                                         details_url=self._settings.details_url,
                                                         output=output)
-                logger.info(f'Created check {check_run.html_url}')
+                logger.info(f'Created check {check_run.html_url} {self._settings.details_url}')
             else:
                 logger.debug(f'updating check with {len(annotations)} more annotations')
                 check_run.edit(output=output)
