@@ -388,7 +388,7 @@ class Publisher:
         summary = get_long_summary_md(stats_with_delta)
 
         # we can send only 50 annotations at once, so we split them into chunks of 50
-        check_run = None
+        check_run = self.get_check_run(self._settings.commit) #try to already running check run
         summary_with_digest = get_long_summary_with_digest_md(stats_with_delta, stats)
         split_annotations = [annotation.to_dict() for annotation in all_annotations]
         split_annotations = [split_annotations[x:x+50] for x in range(0, len(split_annotations), 50)] or [[]]
@@ -403,7 +403,7 @@ class Publisher:
                 logger.debug(f'creating check with {len(annotations)} annotations')
                 check_run = self._repo.create_check_run(name=self._settings.check_name,
                                                         head_sha=self._settings.commit,
-                                                        status='completed',
+                                                        status='in_progress',
                                                         conclusion=conclusion,
                                                         details_url=self._settings.details_url,
                                                         output=output)
@@ -412,6 +412,9 @@ class Publisher:
                 logger.debug(f'updating check with {len(annotations)} more annotations')
                 check_run.edit(output=output)
                 logger.debug(f'updated check')
+
+        if check_run:
+            check_run.edit(status='completed', details_url=self._settings.details_url, conclusion=conclusion)
 
         # create full json
         data = PublishData(
