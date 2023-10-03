@@ -132,6 +132,9 @@ inputs:
     description: 'details url for check, not passed if not provided to check'
     default: 'false'
     required: false
+  conclusion:
+    description: 'report custom conclustion of the check'
+    required: false
 
 outputs:
   json:
@@ -248,6 +251,7 @@ runs:
         # not documented
         LOG_LEVEL: ${{ inputs.log_level }}
         DETAILS_URL: ${{ inputs.detail_url }}
+        CONCLUSION: ${{ inputs.conclusion }}
       shell: bash
 
     - name: Save PIP packages cache

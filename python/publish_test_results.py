@@ -31,13 +31,24 @@ from publish.unittestresults import get_test_results, get_stats, ParsedUnitTestR
 logger = logging.getLogger('publish')
 
 
-def get_conclusion(parsed: ParsedUnitTestResults, fail_on_failures, fail_on_errors) -> str:
+def get_conclusion(parsed: ParsedUnitTestResults, fail_on_failures, fail_on_errors, conclusion = None) -> str:
+
     if parsed.files == 0:
+
+        if conclusion: # if nothing is parsed try get conclusion from input
+            return conclusion
+
         return 'neutral'
+
     if fail_on_errors and len(parsed.errors) > 0:
         return 'failure'
+
     if fail_on_failures and parsed.suite_failures > 0 or fail_on_errors and parsed.suite_errors > 0:
         return 'failure'
+
+    if conclusion: # skipped, cancelled and failure reported from above are honored if no errors in tests were found
+        return conclusion
+
     return 'success'
 
 
@@ -247,7 +258,7 @@ def main(settings: Settings, gha: GithubAction) -> None:
     stats = get_stats(results)
 
     # derive check run conclusion from files
-    conclusion = get_conclusion(parsed, fail_on_failures=settings.fail_on_failures, fail_on_errors=settings.fail_on_errors)
+    conclusion = get_conclusion(parsed, fail_on_failures=settings.fail_on_failures, fail_on_errors=settings.fail_on_errors, settings.conclusion)
 
     # publish the delta stats
     backoff_factor = max(settings.seconds_between_github_reads, settings.seconds_between_github_writes)
@@ -452,6 +463,9 @@ def get_settings(options: dict, gha: Optional[GithubAction] = None) -> Settings:
 
     details_url = get_var('DETAILS_URL', options)
     logger.info(f'Read {details_url}')
+
+    conclusion = get_var('CONCLUSION', options)
+    logger.info(f'Read {conclusion} as conclusion')
 
     settings = Settings(
         token=get_var('GITHUB_TOKEN', options),

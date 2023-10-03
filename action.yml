@@ -132,6 +132,9 @@ inputs:
     description: 'details url for check, not passed if not provided to check'
     default: 'false'
     required: false
+  conclusion:
+    description: 'report custom conclustion of the check'
+    required: false
 
 outputs:
   json:

@@ -71,6 +71,7 @@ class Settings:
     seconds_between_github_writes: float
     search_pull_requests: bool
     details_url: str
+    conclusion: str
 
 
 @dataclasses.dataclass(frozen=True)
