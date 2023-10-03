@@ -258,7 +258,7 @@ def main(settings: Settings, gha: GithubAction) -> None:
     stats = get_stats(results)
 
     # derive check run conclusion from files
-    conclusion = get_conclusion(parsed, fail_on_failures=settings.fail_on_failures, fail_on_errors=settings.fail_on_errors, settings.conclusion)
+    conclusion = get_conclusion(parsed, fail_on_failures=settings.fail_on_failures, fail_on_errors=settings.fail_on_errors, conclusion=settings.conclusion)
 
     # publish the delta stats
     backoff_factor = max(settings.seconds_between_github_reads, settings.seconds_between_github_writes)
